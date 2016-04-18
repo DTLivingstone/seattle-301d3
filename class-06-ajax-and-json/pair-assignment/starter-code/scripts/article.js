@@ -55,6 +55,7 @@ Article.fetchAll = function() {
         $.getJSON('data/hackerIpsum.json', function(data) {
           Article.loadAll(data);
           localStorage.savedHackerIpsum = JSON.stringify(data);
+          localStorage.eTag = eTag;
           articleView.initIndexPage();
         });
       }
