@@ -17,7 +17,7 @@ Article.all = [];
 Article.prototype.toHtml = function() {
   var template = Handlebars.compile($('#article-template').text());
 
-  this.daysAgo = parseInt((new Date() - new Date(this.publishedOn))/60/60/24/1000);
+  this.daysAgo = parseInt((new Date() - new Date(this.publishedOn)) / 60 / 60 / 24 / 1000);
   this.publishStatus = this.publishedOn ? 'published ' + this.daysAgo + ' days ago' : '(draft)';
   this.body = marked(this.body);
 
@@ -44,42 +44,22 @@ Article.loadAll = function(dataPassedIn) {
 // and process it, then hand off control to the View.
 Article.fetchAll = function() {
   if (localStorage.savedHackerIpsum) {
-
-    // When our data is already in localStorage,
-    // we can load it by calling the .loadAll() method,
-    // and then render the index page (using the proper method on the articleView object).
-    console.log('using local storage');
-    Article.loadAll(JSON.parse(localStorage.savedHackerIpsum));
-
-      //DONE: What do we pass in here to the .loadAll() method? Be careful
-      // when handling different data types between here and localStorage!
-
-    articleView.initIndexPage(); //DONE: Change this fake method call to the correct
-    // one that will render the index page.
-  } else {
-    // DONE: When we don't already have our data, we need to:
-    // 1. Retrieve the JSON file from the server with AJAX (which jQuery method is best for this?),
-    var hackerIpsum;
-    $.getJSON('data/hackerIpsum.json', function(data) {
-      Article.loadAll(data);
-      localStorage.savedHackerIpsum = JSON.stringify(data);
-      articleView.initIndexPage();
+    $.ajax({
+      type: 'HEAD',
+      url: 'data/hackerIpsum.json',
+      success: function(data, message, xhr){
+        var eTag = xhr.getResponseHeader('eTag');
+        if (eTag === localStorage.eTag){
+          Article.loadAll(JSON.parse(localStorage.savedHackerIpsum));
+          articleView.initIndexPage();
+        } else {
+          $.getJSON('data/hackerIpsum.json', function(data) {
+            Article.loadAll(data);
+            localStorage.savedHackerIpsum = JSON.stringify(data);
+            articleView.initIndexPage();
+          });
+        }
+      }
     });
-
-    // 2. Store the resulting JSON data with the .loadAll method,
-
-    // 3. Cache it in localStorage so we can skip the server call next time,
-
-    // 4. And then render the index page (perhaps with an articleView method?).
-
   }
 };
-
-/* Great work so far! STRETCH GOAL TIME! Cache the eTag located in Headers, to see if it's updated!
-  Article.fetchAll = function() {
-    if (localStorage.hackerIpsum) {
-    // Let's make a request to get the eTag (hint: you may need to use a different
-    // jQuery method for this more verbose request).
-  } else {}
-}
-*/
