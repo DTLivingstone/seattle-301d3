@@ -42,7 +42,7 @@
   // This function will retrieve the data from either a local or remote source,
   // and process it, then hand off control to the View.
 
-  // TODO: Refactor the Article.fetchAll method, and provide it with a parameter of a callback
+  // DONE: Refactor the Article.fetchAll method, and provide it with a parameter of a callback
   // function (for now just a placeholder, but to be referenced at call-time as a "view" function)
   // that will execute once the loading of articles is done. We do this because we might want
   // to call other view functions, and not just the initIndexPage() that we are replacing.
@@ -77,7 +77,7 @@
     });
   };
 
-  // TODO: Chain together a `map` and a `reduce` call to get a rough count of all words in all articles.
+  // DONE: Chain together a `map` and a `reduce` call to get a rough count of all words in all articles.
   Article.numWordsAll = function() {
     return Article.all.map(function(article) {
       return article.body.match(/\b\w+/g).length;
@@ -87,7 +87,7 @@
     })
   };
 
-  // TODO: Chain together a `map` and a `reduce` call to produce an array of unique author names.
+  // DONE: Chain together a `map` and a `reduce` call to produce an array of unique author names.
   Article.allAuthors = function() {
     return Article.all.map(function(article) {       // map our collection
       return article.author;
@@ -110,10 +110,25 @@
     // written by the specified author.
     return Article.allAuthors().map(function(author) {
       return {
+        name: author,
+        numWords:
+        //filter out all the articles that do not have a matched author name.
+          Article.all.filter(function(curArticle){
+            return curArticle.author === author; //if current article has an author that matches the allAuthors array. make two proterties
+          })
+          .map(function(article) {
+            return article.body.match(/\b\w+/g).length;
+          })
+          .reduce(function(a, b){
+            return a + b;
+          })
+        //take those articles and add those word counts.
         // name:
         // numWords: someCollection.filter(function(curArticle) {
         //  what do we return here to check for matching authors?
         // })
+
+        // .numWordsAll()
         // .map(...) // use .map to return the author's word count for each article (hint: regexp!).
         // .reduce(...) // squash this array of numbers into one big number!
       }
