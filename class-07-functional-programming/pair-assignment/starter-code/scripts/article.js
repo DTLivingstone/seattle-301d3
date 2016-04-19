@@ -89,14 +89,18 @@
 
   // TODO: Chain together a `map` and a `reduce` call to produce an array of unique author names.
   Article.allAuthors = function() {
-    return Article.all.map(function(author) {       // map our collection
-      return Article.author;
+    return Article.all.map(function(article) {       // map our collection
+      return article.author;
     })
-    // .reduce(function(acc, cur, idx, arr) { // return just the author names
-    //   acc.indexOf(cur) === -1;
-    //   // For our `reduce` that we'll chain here -- since we are trying to return an array, we'll need to specify an accumulator type...
-    //   // what data type should this accumulator be and where is it placed?
-    // })
+    .reduce(function(acc, cur) { // return just the author names
+      console.log(acc);
+      if (acc.indexOf(cur) === -1) {
+        acc.push(cur);
+      };
+      return acc;
+      // For our `reduce` that we'll chain here -- since we are trying to return an array, we'll need to specify an accumulator type...
+      // what data type should this accumulator be and where is it placed?
+    }, []);
   };
 
 
