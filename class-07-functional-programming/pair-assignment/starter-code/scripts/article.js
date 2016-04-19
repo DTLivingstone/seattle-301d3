@@ -1,6 +1,6 @@
 // DONE: Wrap the entire contents of this file in an IIFE.
 // Pass in to the IIFE a module, upon which objects can be attached for later access.
-// (function(module) {
+(function(module) {
 
   function Article (opts) {
     this.author = opts.author;
@@ -93,7 +93,6 @@
       return article.author;
     })
     .reduce(function(acc, cur) { // return just the author names
-      console.log(acc);
       if (acc.indexOf(cur) === -1) {
         acc.push(cur);
       };
@@ -105,7 +104,7 @@
 
 
   Article.numWordsByAuthor = function() {
-    // TODO: Transform each element into an object with 2 properties: One for
+    // DONE: Transform each element into an object with 2 properties: One for
     // the author's name, and one for the total number of words across the matching articles
     // written by the specified author.
     return Article.allAuthors().map(function(author) {
@@ -134,7 +133,6 @@
       }
     })
   };
-//
-//   module.article = Article;
-//
-// })(window);
+
+  module.Article = Article;
+})(window);
