@@ -24,6 +24,11 @@ p {
   font-size: 1em;
 }
 
+h1 a {
+  color: #313131;
+  text-decoration: none;
+}
+
 address {
   display: inline-block;
 }
