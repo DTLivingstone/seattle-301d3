@@ -8,7 +8,7 @@
     //  Don't forget to call the callback!
 
     $.ajax({
-      url:     'https://api.github.com/users/DTLivingstone/repos' +
+      url:     'https://api.github.com/users/jefferyrayrussell/repos' +
                '?per_page=10' +
                '&sort=updated',
       type:    'GET',
