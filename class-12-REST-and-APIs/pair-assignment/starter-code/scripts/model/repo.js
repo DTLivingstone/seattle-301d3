@@ -7,6 +7,18 @@
     // TODO: How would you like to fetch your repos? Someone say AJAX!?
     //  Don't forget to call the callback!
 
+    $.ajax({
+      url:     'https://api.github.com/users/DTLivingstone/repos' +
+               '?per_page=10' +
+               '&sort=updated',
+      type:    'GET',
+      headers: {'Authorization': 'token ' + githubToken},
+      success: function(data) {
+        console.log(data);
+      }
+    });
+
+
   };
 
   // DONE: Model method that filters the full collection for repos with a particular attribute.
